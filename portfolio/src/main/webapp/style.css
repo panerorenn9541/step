@@ -7,3 +7,26 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+img.stadium {
+    height: 110%;
+    width: 110%;
+}
+
+img.helmet {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height:40%;
+    width:40%;
+}
+
+.row{
+    height:112%;
+    width:112%;
+    display: flex;
+}
+.column{
+    flex:50%;
+    padding:5px;
+}
