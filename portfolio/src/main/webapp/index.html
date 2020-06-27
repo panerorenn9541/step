@@ -2,39 +2,34 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Home</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
   </head>
   <body>
     <div id="content">
-      <h1>Noe's Portfolio</h1>
+      <div class = "header">
+        <h1>Noe's STEP Portfolio</h1>
+        <p>Home</p>
+      </div>
 
       <div class = "menu">
-        <a class = "active" href="index.html">About Me</a>
+        <a class = "active" href="index.html">Home</a>
+        <a href="about.html">About Me</a>
         <a href="projects.html">My Projects</a>
         <a href="talents.html">Hidden Talents</a>
       </div>
 
-      <p>Hi! My name is Noe, and I am a rising junior computer science major at UCI. I am from San Diego, and I enjoy playing soccer, playing video games, and watching Youtube in my free time.</p>
-      <img class = "helmet" src = "/images/IMG_2360.JPG" alt = "Me in a helmet">
-
-      <p>I went to Barcelona last summer to visit family, and while I was there, I was lucky enough to watch my favorite soccer team play. I took this picture before the game.</p>
-      <img class = "stadium" src = "/images/Image-1.jpg" alt = "Barca picture" >
-
-      <p>During that same summer, I got to see Portugal and Holland for the first time, which was really cool! I took the picture to the left in Porto, and the picture from the right is from Utrecht.
-      <div class = "row">
-          <div class = "column">
-              <img src = "/images/IMG_1617.JPG" alt = "Porto" style = "width:100%; height:100%">
-          </div>
-          <div class = "column">
-              <img src = "/images/IMG_1572.JPG" alt = "Utrecht" style = "width:100%; height:100%">
-          </div>
+      <h1 style="text-align: center">Welcome to my portfolio!</h1>
+      <h2 style="text-align: center">Feel free to explore using the tabs above</h2>
+      <img class = "logo" src = "/images/google.jpg" alt = "google logo">
+      
+      <div class = "contact">
+        <hr style= "color:gray;background-color:gray">
+        <link rel="stylesheet": href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <h3>Contact me:</h3>
+        <a href="https://github.com/panerorenn9541" class="fa fa-github"></a>
+        <a href="https://linkedin.com/in/noe-panero-ren-b95415193" class="fa fa-linkedin"></a>
       </div>
-
-      <p>Click here to get a random quote from my favorite TV show Seinfeld.</p>
-      <button onclick="addRandomQuote()">Quote</button>
-      <div id="quote-container"></div>
     </div>
   </body>
 </html>

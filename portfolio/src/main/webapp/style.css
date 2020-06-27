@@ -1,56 +1,138 @@
+.header{
+    padding: 10px;
+    text-align: center;
+    background: #de5246;
+    color: white;
+    font-size: 30px;
+}
+
 .menu {
-    background-color: #4285F4;
-    overflow: hidden;
+  background-color: #4285F4;
+  overflow: hidden;
 }
 
 .menu a {
-    float:left;
-    width: 28.4%;
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 16px;
-    font-size: 24px;
-    text-decoration: none;
+  float:left;
+  width: 23.2%;
+  color: #ffffff;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 24px;
+  text-decoration: none;
 }
 
 .menu a:hover {
-    background-color: #1a1a1a;
+  background-color: #1a1a1a;
 }
 
 .menu a.active {
-    background-color: #0f9d58;
+  background-color: #0f9d58;
 }
-
 
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 70%;
+
 }
 
 #greeting-container {
   margin-top: 20px;
 }
 
-img.stadium {
-    height: 110%;
-    width: 110%;
-}
-
 img.helmet {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height:40%;
-    width:40%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height:15%;
+  width:15%;
 }
 
-.row{
-    height:112%;
-    width:112%;
-    display: flex;
+.row {
+  height:100%;
+  width:100%;
+  display: flex;
 }
-.column{
-    flex:50%;
-    padding:5px;
+
+.column {
+  flex:33.33%;
+  padding:5px;
+}
+
+.twoRow {
+  height:100%;
+  width:100%;
+  display: flex;
+}
+
+.twoColumn {
+  flex:50%;
+  padding:5px;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: 150px;
+}
+
+.contact {
+    position: fixed;
+    bottom: 5px;
+}
+
+.fa {
+    padding: 20px;
+    font-size: 30px;
+    width: 30px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-linkedin {
+    background: #007bb5;
+    color: white;
+}
+
+.fa-github {
+    background: #2c4762;
+    color: white;
+}
+
+.maps {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img.shell {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height:50%;
+  width:50%;
+}
+
+img.alphabet {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height:25%;
+  width:25%;
+}
+
+img.haircut {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height:25%;
+  width:25%;
 }
