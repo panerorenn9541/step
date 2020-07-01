@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Home</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
   </head>
   <body>
     <div id="content">
@@ -24,6 +25,17 @@
         Feel free to explore using the tabs above
       </h2>
       <img class="logo" src="/images/google.jpg" alt="google logo" />
+
+      <form action="/data" method="POST">
+        <p>Enter a comment</p>
+        <textarea name="text-input"></textarea>
+        <br /><br />
+        <input type="submit" />
+      </form>
+
+      <p>Click here to see comments:</p>
+      <button onclick="loadComments()">Get Comments</button>
+      <ul id="comment-list"></ul>
 
       <div class="contact">
         <hr
