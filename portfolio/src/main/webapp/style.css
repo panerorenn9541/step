@@ -1,9 +1,138 @@
+.header {
+  padding: 10px;
+  text-align: center;
+  background: #de5246;
+  color: white;
+  font-size: 30px;
+}
+
+.menu {
+  background-color: #4285f4;
+  overflow: hidden;
+}
+
+.menu a {
+  float: left;
+  width: 24%;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.5%;
+  font-size: 150%;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background-color: #1a1a1a;
+}
+
+.menu a.active {
+  background-color: #0f9d58;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 70%;
 }
 
 #greeting-container {
   margin-top: 20px;
+}
+
+img.helmet {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 15%;
+  width: 15%;
+}
+
+.row {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.column {
+  flex: 33.33%;
+  padding: 5px;
+}
+
+.twoRow {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.twoColumn {
+  flex: 50%;
+  padding: 5px;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80%;
+  width: 80%;
+}
+
+.contact {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fa:hover {
+  opacity: 0.7;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-github {
+  background: #2c4762;
+  color: white;
+}
+
+.maps {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img.shell {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50%;
+  width: 50%;
+}
+
+img.alphabet {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 25%;
+  width: 25%;
+}
+
+img.haircut {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 25%;
+  width: 25%;
 }
