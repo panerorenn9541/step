@@ -16,9 +16,12 @@
  * Adds a random Seinfeld quote to the page.
  */
 function addRandomQuote() {
-  const quotes =
-      ['Tuesday has no feel. Monday has a feel, Friday has a feel, Sunday has a feel...', 'Jerry, just remember, its not a lie if you believe it.',
-        'You know I always wanted to pretend I was an architect.', 'I don\'t think George has ever thought he\'s better than anybody.'];
+  const quotes = [
+    'Tuesday has no feel. Monday has a feel, Friday has a feel, Sunday has a feel...',
+    'Jerry, just remember, its not a lie if you believe it.',
+    'You know I always wanted to pretend I was an architect.',
+    'I don\'t think George has ever thought he\'s better than anybody.'
+  ];
 
   // Pick a random quote.
   const quote = quotes[Math.floor(Math.random() * quotes.length)];
