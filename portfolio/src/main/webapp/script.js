@@ -33,10 +33,14 @@ function addRandomQuote() {
 
 /** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
+  const limit = 5;
+  counter = 0;
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
     comments.forEach((comment) => {
-      commentListElement.appendChild(createCommentElement(comment));
+      if(counter < limit)
+        commentListElement.appendChild(createCommentElement(comment));
+        ++counter;
     })
   });
 }
