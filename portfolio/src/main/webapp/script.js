@@ -51,23 +51,6 @@ function createCommentElement(comment) {
   const messageElement = document.createElement('span');
   messageElement.innerText = comment.message;
 
-  ////const deleteButtonElement = document.createElement('button');
-  ////deleteButtonElement.innerText = 'Delete';
-  ////deleteButtonElement.addEventListener('click', () => {
-  ////deleteComment(comment);
-
-  // Remove the task from the DOM.
-  ////commentElement.remove();
-  ////});
-
   commentElement.appendChild(messageElement);
-  ////commentElement.appendChild(deleteButtonElement);
   return commentElement;
 }
-
-/** Tells the server to delete the task. */
-////function deleteComment(comment) {
-////const params = new URLSearchParams();
-////params.append('message', task.message);
-////fetch('/delete-message', {method: 'POST', body: params});
-////}
