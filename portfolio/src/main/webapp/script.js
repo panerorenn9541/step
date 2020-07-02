@@ -33,10 +33,13 @@ function addRandomQuote() {
 
 /** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
-  const limit = 5;
+  var limit = document.getElementById("commentLimit").value;
   counter = 0;
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
+    while (commentListElement.firstChild) {
+      commentListElement.removeChild(commentListElement.lastChild);
+    }
     comments.forEach((comment) => {
       if(counter < limit)
         commentListElement.appendChild(createCommentElement(comment));
@@ -55,6 +58,23 @@ function createCommentElement(comment) {
   const messageElement = document.createElement('span');
   messageElement.innerText = comment.message;
 
+  const deleteButtonElement = document.createElement('button');
+  deleteButtonElement.innerText = 'Delete';
+  deleteButtonElement.addEventListener('click', () => {
+    deleteComment(comment);
+
+    //remove the comment from the DOM.
+    commentElement.remove();
+  });
+
   commentElement.appendChild(messageElement);
+  commentElement.appendChild(deleteButtonElement);
   return commentElement;
+}
+
+/** Tells the server to delete the comment. */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-data', {method: 'POST', body: params});
 }

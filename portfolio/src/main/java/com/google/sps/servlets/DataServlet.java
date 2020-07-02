@@ -40,8 +40,9 @@ public class DataServlet extends HttpServlet {
 
     ArrayList<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
-      Comment comment = new Comment(message);
+      Comment comment = new Comment(id, message);
       comments.add(comment);
     }
 
