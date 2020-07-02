@@ -33,7 +33,7 @@ function addRandomQuote() {
 
 /** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
-  var limit = document.getElementById("commentLimit").value;
+  var limit = document.getElementById('commentLimit').value;
   counter = 0;
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
@@ -41,9 +41,9 @@ function loadComments() {
       commentListElement.removeChild(commentListElement.lastChild);
     }
     comments.forEach((comment) => {
-      if(counter < limit)
+      if (counter < limit)
         commentListElement.appendChild(createCommentElement(comment));
-        ++counter;
+      ++counter;
     })
   });
 }
@@ -63,7 +63,7 @@ function createCommentElement(comment) {
   deleteButtonElement.addEventListener('click', () => {
     deleteComment(comment);
 
-    //remove the comment from the DOM.
+    // remove the comment from the DOM.
     commentElement.remove();
   });
 
