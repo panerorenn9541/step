@@ -49,15 +49,17 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(convertToJson(comments));
   }
 
-  private String convertToJson(ArrayList<Comment> cmts) {
-    Gson gson = new Gson();
-    String json = gson.toJson(cmts);
-    return json;
+  public final class Comment {
+    private final String message;
+
+    public Comment(String message) {
+      this.message = message;
+    }
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
+    String text = getRequestParameterOrDefault(request, "text-input", "");
 
     // Respond with the result.
     response.setContentType("text/html;");
@@ -72,11 +74,18 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
+  private String convertToJson(ArrayList<Comment> cmts) {
+    Gson gson = new Gson();
+    String json = gson.toJson(cmts);
+    return json;
+  }
+
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getRequestParameterOrDefault(
+      HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
       return defaultValue;
