@@ -33,8 +33,9 @@ function addRandomQuote() {
 
 /** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
-  var limit = document.getElementById('commentLimit').value;
+  const limit = document.getElementById('commentLimit').value;
   counter = 0;
+
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
     while (commentListElement.firstChild) {
@@ -56,7 +57,8 @@ function createCommentElement(comment) {
   commentElement.className = 'comment';
 
   const messageElement = document.createElement('span');
-  messageElement.innerText = comment.message;
+  messageElement.innerText = `${comment.name} says ${
+      comment.message} (Sentiment Score: ${comment.sentiment})`;
 
   const deleteButtonElement = document.createElement('button');
   deleteButtonElement.innerText = 'Delete';
