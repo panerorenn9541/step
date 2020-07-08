@@ -36,17 +36,21 @@ function loadComments() {
   const limit = document.getElementById('commentLimit').value;
   counter = 0;
 
-  fetch('/data').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comment-list');
-    while (commentListElement.firstChild) {
-      commentListElement.removeChild(commentListElement.lastChild);
-    }
-    comments.forEach((comment) => {
-      if (counter < limit)
-        commentListElement.appendChild(createCommentElement(comment));
-      ++counter;
-    })
-  });
+  const language = document.getElementById('commentLanguage').value;
+
+  fetch('/data?lang=' + language)
+      .then(response => response.json())
+      .then((comments) => {
+        const commentListElement = document.getElementById('comment-list');
+        while (commentListElement.firstChild) {
+          commentListElement.removeChild(commentListElement.lastChild);
+        }
+        comments.forEach((comment) => {
+          if (counter < limit)
+            commentListElement.appendChild(createCommentElement(comment));
+          ++counter;
+        })
+      });
 }
 
 /**
