@@ -100,7 +100,7 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(cmts);
     return json;
   }
- 
+
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
