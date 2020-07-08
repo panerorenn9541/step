@@ -47,6 +47,7 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
+      message = "says " + message; 
       Translate translate = TranslateOptions.getDefaultInstance().getService();
       Translation translation =
           translate.translate(message, Translate.TranslateOption.targetLanguage(language));

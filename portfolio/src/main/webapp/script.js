@@ -31,9 +31,13 @@ function addRandomQuote() {
   quoteContainer.innerText = quote;
 }
 
+window.onload = function() {
+  loadComments()
+};
 /** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
-  const limit = document.getElementById('commentLimit').value;
+  const limit = document.getElementById('commentPages').value;
+  const commentsPerPage = 5;
   counter = 0;
 
   const language = document.getElementById('commentLanguage').value;
@@ -46,9 +50,11 @@ function loadComments() {
           commentListElement.removeChild(commentListElement.lastChild);
         }
         comments.forEach((comment) => {
-          if (counter < limit)
+          if (counter < limit * commentsPerPage &&
+              counter >= (limit - 1) * commentsPerPage) {
             commentListElement.appendChild(createCommentElement(comment));
-          ++counter;
+            ++counter;
+          }
         })
       });
 }
@@ -61,7 +67,7 @@ function createCommentElement(comment) {
   commentElement.className = 'comment';
 
   const messageElement = document.createElement('span');
-  messageElement.innerText = `${comment.name} says ${
+  messageElement.innerText = `${comment.name} ${
       comment.message} (Sentiment Score: ${comment.sentiment})`;
 
   const deleteButtonElement = document.createElement('button');
