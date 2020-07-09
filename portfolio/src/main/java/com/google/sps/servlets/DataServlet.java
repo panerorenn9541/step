@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.sps.servlets;
- 
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -29,7 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
- 
+
     ArrayList<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
@@ -48,7 +48,7 @@ public class DataServlet extends HttpServlet {
       Comment comment = new Comment(id, name, message, sentiment);
       comments.add(comment);
     }
- 
+
     response.setContentType("application/json;");
     response.getWriter().println(convertToJson(comments));
   }
@@ -66,7 +66,7 @@ public class DataServlet extends HttpServlet {
       this.sentiment = sentiment;
     }
   }
- 
+
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String text = getRequestParameterOrDefault(request, "text-input", "");
@@ -91,7 +91,7 @@ public class DataServlet extends HttpServlet {
  
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
- 
+
     response.sendRedirect("/index.html");
   }
 
