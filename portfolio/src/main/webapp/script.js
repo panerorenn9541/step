@@ -90,3 +90,13 @@ function deleteComment(comment) {
   params.append('id', comment.id);
   fetch('/delete-data', {method: 'POST', body: params});
 }
+
+window.onload = function() {
+  createMap()
+};
+
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+}

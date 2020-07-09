@@ -88,6 +88,12 @@ input[type=submit]:hover {
   flex-grow: 1;
 }
 
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
+
 img.helmet {
   display: block;
   margin-left: auto;
