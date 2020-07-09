@@ -25,17 +25,31 @@
         Feel free to explore using the tabs above
       </h2>
       <img class="logo" src="/images/google.jpg" alt="google logo" />
+      <br /><br />
 
-      <form action="/data" method="POST">
-        <p>Enter a comment</p>
-        <textarea name="text-input"></textarea>
-        <br /><br />
-        <input type="submit" />
-      </form>
+      <div class="commentDiv">
+        <form action="/data" method="POST">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name">
 
-      <p>Click here to see comments:</p>
-      <button onclick="loadComments()">Get Comments</button>
-      <ul id="comment-list"></ul>
+          <label for="text-input">Comment</label>
+          <input type="text" id="text-input" name="text-input" placeholder="Your comment">
+        
+          <br /><br />
+          <input type="submit" value"Submit" />
+        </form> 
+
+        <p>How many comments do you want to see?</p>
+        <select id="commentLimit" onchange="loadComments()">
+          <option value="0">0 </option
+          ><option value="1">1 </option
+          ><option value="2">2 </option
+          ><option value="3">3 </option
+          ><option value="4">4 </option
+          ><option value="5">5 </option></select>
+
+        <ul id="comment-list"></ul>
+      </div>   
 
       <div class="contact">
         <hr
