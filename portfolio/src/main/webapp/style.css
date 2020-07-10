@@ -94,6 +94,11 @@ input[type=submit]:hover {
   width: 100%;
 }
 
+div.mapSubText {
+    float: center;
+    text-align: center;
+}
+
 img.helmet {
   display: block;
   margin-left: auto;
