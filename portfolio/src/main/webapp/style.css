@@ -95,8 +95,8 @@ input[type=submit]:hover {
 }
 
 div.mapSubText {
-    float: center;
-    text-align: center;
+  float: center;
+  text-align: center;
 }
 
 img.helmet {

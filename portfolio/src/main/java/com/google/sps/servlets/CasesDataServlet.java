@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import static com.google.sps.servlets.Constants.cType;
+import static com.google.sps.servlets.Constants.stats;
+
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,13 +30,13 @@ import javax.servlet.http.HttpServletResponse;
 /** Returns case data as a JSON array, e.g. [{"lat": 38.4404675, "lng": -122.7144313}] */
 @WebServlet("/report")
 public class CasesDataServlet extends HttpServlet {
-  private Collection<Report> reports;
+  private String json;
 
   @Override
   public void init() {
-    reports = new ArrayList<>();
+    Collection<Report> reports = new ArrayList<>();
 
-    Scanner scanner = new Scanner(getServletContext().getResourceAsStream("/WEB-INF/cases.csv"));
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(stats));
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(",");
@@ -45,13 +48,13 @@ public class CasesDataServlet extends HttpServlet {
       reports.add(new Report(lat, lng, active));
     }
     scanner.close();
+    Gson gson = new Gson();
+    json = gson.toJson(reports);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
-    Gson gson = new Gson();
-    String json = gson.toJson(reports);
+    response.setContentType(cType);
     response.getWriter().println(json);
   }
 
