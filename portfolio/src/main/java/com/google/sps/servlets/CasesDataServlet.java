@@ -14,10 +14,8 @@
 
 package com.google.sps.servlets;
 
-import static com.google.sps.servlets.Constants.cType;
-import static com.google.sps.servlets.Constants.stats;
-
 import com.google.gson.Gson;
+import com.google.sps.servlets.Constants;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,13 +28,14 @@ import javax.servlet.http.HttpServletResponse;
 /** Returns case data as a JSON array, e.g. [{"lat": 38.4404675, "lng": -122.7144313}] */
 @WebServlet("/report")
 public class CasesDataServlet extends HttpServlet {
-  private String json;
+  private String reportsJson;
+  public static final String STATS = "/WEB-INF/cases.csv";
 
   @Override
   public void init() {
     Collection<Report> reports = new ArrayList<>();
 
-    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(stats));
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(STATS));
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       String[] cells = line.split(",");
@@ -49,13 +48,13 @@ public class CasesDataServlet extends HttpServlet {
     }
     scanner.close();
     Gson gson = new Gson();
-    json = gson.toJson(reports);
+    reportsJson = gson.toJson(reports);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType(cType);
-    response.getWriter().println(json);
+    response.setContentType(Constants.CTYPE);
+    response.getWriter().println(reportsJson);
   }
 
   /** Represents a case at a specific lat lng point. */

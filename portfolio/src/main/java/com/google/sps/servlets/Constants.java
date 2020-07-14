@@ -2,8 +2,6 @@ package com.google.sps.servlets;
 
 public final class Constants {
   private Constants() {}
-  public static final String stats = "/WEB-INF/cases.csv";
-  public static final String cType = "application/json";
-  public static final String encoding = "UTF-8";
-  public static final String says = "says ";
+  public static final String CTYPE = "application/json"; // HttpServletResponse content type
+  public static final String ENCODING = "UTF-8"; // HttpServletResponse character encoding
 }
