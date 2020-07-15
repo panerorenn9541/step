@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  public static final String SAYS = "says ";
+  public static final String MESSAGE_PREFIX = "says ";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setCharacterEncoding(Constants.ENCODING);
@@ -50,7 +50,7 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
-      message = SAYS + message;
+      message = MESSAGE_PREFIX + message;
       message = message.trim();
       Translate translate = TranslateOptions.getDefaultInstance().getService();
       Translation translation =
