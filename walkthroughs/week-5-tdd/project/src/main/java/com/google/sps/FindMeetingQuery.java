@@ -95,9 +95,9 @@ public final class FindMeetingQuery {
           meetingTimesIterator.remove();
         }
       }
-    }
-    for (TimeRange adding : meetingTimesToAdd) {
-      meetingTimes.add(adding);
+      for (TimeRange adding : meetingTimesToAdd) {
+        meetingTimes.add(adding);
+      }
     }
     return meetingTimes;
   }
