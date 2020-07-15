@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 import com.google.gson.Gson;
+import com.google.sps.servlets.Constants;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -36,8 +37,10 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  public static final String MESSAGE_PREFIX = "says ";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setCharacterEncoding(Constants.ENCODING);
     Query query = new Query("comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -47,6 +50,8 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("message");
+      message = MESSAGE_PREFIX + message;
+      message = message.trim();
       Translate translate = TranslateOptions.getDefaultInstance().getService();
       Translation translation =
           translate.translate(message, Translate.TranslateOption.targetLanguage(language));
@@ -58,7 +63,7 @@ public class DataServlet extends HttpServlet {
       comments.add(comment);
     }
 
-    response.setContentType("application/json;");
+    response.setContentType(Constants.CTYPE);
     response.getWriter().println(convertToJson(comments));
   }
 

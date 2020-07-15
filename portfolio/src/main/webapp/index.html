@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Home</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhMGdqz3ui7XSPBm3XTn_EmWRYKd6IDNs&libraries=visualization"></script>
     <script src="script.js"></script>
   </head>
   <body>
@@ -27,40 +28,56 @@
       <img class="logo" src="/images/google.jpg" alt="google logo" />
       <br /><br />
 
-      <div class="commentDiv">
-        <form action="/data" method="POST">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name">
+      <div class="twoRow">
+        <div class="twoColumn">
+          <div class="commentDiv">
+            <form action="/data" method="POST">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name">
 
-          <label for="text-input">Comment</label>
-          <input type="text" id="text-input" name="text-input" placeholder="Your comment">
+              <label for="text-input">Comment</label>
+              <input type="text" id="text-input" name="text-input" placeholder="Your comment">
         
-          <br /><br />
-          <input type="submit" value"Submit" />
-        </form> 
+              <br /><br />
+              <input type="submit" value"Submit" />
+            </form> 
 
-        <p>How many comments do you want to see?</p>
-        <select id="commentLimit" onchange="loadComments()">
-          <option value="0">0 </option>
-          <option value="1">1 </option>
-          <option value="2">2 </option>
-          <option value="3">3 </option>
-          <option value="4">4 </option>
-          <option value="5">5 </option>
-        </select>
-
-        <p>In which language would you like to see the comments?</p>
-        <select id="commentLanguage" onchange="loadComments()">
-          <option value="en">English </option>
-          <option value="es">Spanish </option>
-          <option value="ca">Catalan </option>
-          <option value="zh">Chinese </option>
-          <option value="pt">Portugese </option>
-          <option value="nl">Dutch </option>
-        </select>
-
-        <ul id="comment-list"></ul>
-      </div>   
+            <div class="twoRow">
+              <div class="twoColumn">
+                <p>Which page of comments would you like to see?</p>
+                <select id="commentPages" onchange="loadComments()">
+                  <option value="1">1 </option>
+                  <option value="2">2 </option>
+                  <option value="3">3 </option>
+                  <option value="4">4 </option>
+                  <option value="5">5 </option>
+                  <option value="6">6 </option>
+                </select>
+              </div>
+              <div class="twoColumn">
+                <p>In which language would you like to see the comments?</p>
+                <select id="commentLanguage" onchange="loadComments()">
+                  <option value="en">English </option>
+                  <option value="es">Spanish </option>
+                  <option value="ca">Catalan </option>
+                  <option value="zh">Chinese </option>
+                  <option value="pt">Portugese </option>
+                  <option value="nl">Dutch </option>
+                </select>
+              </div>
+            </div>  
+            <br />
+            <ul id="comment-list"></ul>
+          </div>
+        </div>
+        <div class="twoColumn">
+          <div id="map"></div>
+          <div class="mapSubText">
+            <h2>Covid-19 Heat Map</h2>
+            <p>Markers represent personal points of interest!</p>
+          </div>
+        </div>
+      </div>    
 
       <div class="contact">
         <hr
@@ -83,7 +100,7 @@
           href="https://linkedin.com/in/noe-panero-ren-b95415193"
           class="fa fa-linkedin"
         ></a>
-      </div>
+      </div>   
     </div>
   </body>
 </html>
