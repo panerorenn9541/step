@@ -129,12 +129,10 @@ public final class FindMeetingQuery {
         optionalMeetingTimes.add(optionalAdding);
       }
       optionalMeetingTimesToAdd.clear();
+      if (!optionalMeetingTimes.isEmpty()) {
+        meetingTimes = (ArrayList<TimeRange>) optionalMeetingTimes.clone();
+      }
     }
-
-    if (optionalMeetingTimes.isEmpty()) {
-      return meetingTimes;
-    } else {
-      return optionalMeetingTimes;
-    }
+    return meetingTimes;
   }
 }
