@@ -40,19 +40,10 @@ public final class FindMeetingQuery {
     schedules = initSchedules(request, schedules);
 
     // Update each attendee's schedule based on events
-    for (Event event : events) {
-      for (String attendee : event.getAttendees()) {
-        if (schedules.containsKey(attendee)) {
-          for (ListIterator scheduleIterator = schedules.get(attendee).listIterator();
-               scheduleIterator.hasNext();) {
-            schedules = scheduleEvent(event, attendee, scheduleIterator, schedules);
-          }
-        }
-      }
-    }
+    scheduleEvents(events, schedules);
 
     // Takes into consideration all attendees to find free slots
-    int firstFlag = 1;
+    boolean firstFlag = true;
     ArrayList<TimeRange> meetingTimesToAdd = new ArrayList<TimeRange>();
     for (String attendee : request.getAttendees()) {
       meetingTimesToAdd = determineAvailableTime(
@@ -61,14 +52,14 @@ public final class FindMeetingQuery {
         meetingTimes.add(adding);
       }
       meetingTimesToAdd.clear();
-      firstFlag = 0;
+      firstFlag = false;
     }
 
-    // Takes into consideration all optional attenddes to find free slots
+    // Takes into consideration all optional attendees to find free slots
     ArrayList<TimeRange> optionalMeetingTimesToAdd = new ArrayList<TimeRange>();
     Map<String, ArrayList<TimeRange>> optionalFrees = new HashMap<String, ArrayList<TimeRange>>();
     for (String optionalAttendee : request.getOptionalAttendees()) {
-      firstFlag = 0;
+      firstFlag = false;
       ArrayList<TimeRange> optionalMeetingTimes = (ArrayList<TimeRange>) meetingTimes.clone();
       optionalMeetingTimesToAdd = determineAvailableTime(request, firstFlag,
           optionalMeetingTimesToAdd, schedules, optionalAttendee, optionalMeetingTimes);
@@ -78,7 +69,6 @@ public final class FindMeetingQuery {
       }
       optionalMeetingTimesToAdd.clear();
     }
-
     // If only one optional can attend, return that slot
     if (optionalFrees.size() == 1) {
       return optionalFrees.values().iterator().next();
@@ -87,22 +77,21 @@ public final class FindMeetingQuery {
     // Find slots where the most optionals can attend
     Map<TimeRange, Integer> freeCounter = new HashMap<TimeRange, Integer>();
     freeCounter = determineFrequency(freeCounter, optionalFrees, request);
-    int maximum = 0;
+    int maxFreeOptionals = 0;
     ArrayList<TimeRange> finalTimes = new ArrayList<TimeRange>();
     for (TimeRange window : freeCounter.keySet()) {
-      if (freeCounter.get(window) > maximum) {
-        maximum = freeCounter.get(window);
+      if (freeCounter.get(window) > maxFreeOptionals) {
+        maxFreeOptionals = freeCounter.get(window);
       }
     }
-
     // If no free slots are available, return the mandatory free slots
-    if (maximum == 0) {
+    if (maxFreeOptionals == 0) {
       return meetingTimes;
     }
 
     // Otherwise, find the most available windows
     for (TimeRange window : freeCounter.keySet()) {
-      if (freeCounter.get(window) == maximum) {
+      if (freeCounter.get(window) == maxFreeOptionals) {
         finalTimes.add(window);
       }
     }
@@ -122,50 +111,56 @@ public final class FindMeetingQuery {
     return schedules;
   }
 
-  private Map<String, ArrayList<TimeRange>> scheduleEvent(Event event, String attendee,
-      ListIterator scheduleIterator, Map<String, ArrayList<TimeRange>> schedules) {
-    // Determine an attendee's updated availability based on an event
-    TimeRange freeTime = (TimeRange) scheduleIterator.next();
-    // If the event takes the whole slot, remove the slot
-    if (freeTime.equals(event.getWhen())) {
-      scheduleIterator.remove();
-      // If the event is contained within the free slot, shorten the slot
-    } else if (freeTime.contains(event.getWhen())) {
-      scheduleIterator.remove();
-      if (freeTime.start() != event.getWhen().start()) {
-        scheduleIterator.add(
-            TimeRange.fromStartEnd(freeTime.start(), event.getWhen().start(), false));
-      }
-      if (freeTime.end() != event.getWhen().end()) {
-        scheduleIterator.add(TimeRange.fromStartEnd(event.getWhen().end(), freeTime.end(), false));
-      }
-      // If the event overlaps with the free slot, shorten the slot based on whether the start or
-      // end overlaps.
-    } else if (freeTime.overlaps(event.getWhen())) {
-      scheduleIterator.remove();
-      if (freeTime.start() < event.getWhen().end()) {
-        scheduleIterator.add(TimeRange.fromStartEnd(event.getWhen().end(), freeTime.end(), false));
-      } else if (freeTime.end() > event.getWhen().start()) {
-        scheduleIterator.add(
-            TimeRange.fromStartEnd(freeTime.start(), event.getWhen().start(), false));
+  private void scheduleEvents(Collection<Event> events, Map<String, ArrayList<TimeRange>> schedules) {
+    // Fills each attendee's schedule based on their events  
+    for (Event event : events) {
+      for (String attendee : event.getAttendees()) {
+        if (schedules.containsKey(attendee)) {
+          for (ListIterator scheduleIterator = schedules.get(attendee).listIterator();
+               scheduleIterator.hasNext();) {
+            // Determine an attendee's updated availability based on an event
+            TimeRange freeTime = (TimeRange) scheduleIterator.next();
+            if (freeTime.equals(event.getWhen())) {
+              // If the event takes the whole slot, remove the slot  
+              scheduleIterator.remove();
+            } else if (freeTime.contains(event.getWhen())) {
+              // If the event is contained within the free slot, shorten the slot  
+              scheduleIterator.remove();
+              if (freeTime.start() != event.getWhen().start()) {
+                scheduleIterator.add(
+                    TimeRange.fromStartEnd(freeTime.start(), event.getWhen().start(), false));
+              }
+              if (freeTime.end() != event.getWhen().end()) {
+                scheduleIterator.add(TimeRange.fromStartEnd(event.getWhen().end(), freeTime.end(), false));
+              }
+            } else if (freeTime.overlaps(event.getWhen())) {
+              // If the event overlaps with the free slot, shorten the slot based on overlap
+              scheduleIterator.remove();
+              if (freeTime.start() < event.getWhen().end()) {
+                scheduleIterator.add(TimeRange.fromStartEnd(event.getWhen().end(), freeTime.end(), false));
+              } else if (freeTime.end() > event.getWhen().start()) {
+                scheduleIterator.add(
+                    TimeRange.fromStartEnd(freeTime.start(), event.getWhen().start(), false));
+              }
+            }
+          }
+        }
       }
     }
-    return schedules;
   }
 
-  private ArrayList<TimeRange> determineAvailableTime(MeetingRequest request, int firstFlag,
+  private ArrayList<TimeRange> determineAvailableTime(MeetingRequest request, boolean firstFlag,
       ArrayList<TimeRange> meetingTimesToAdd, Map<String, ArrayList<TimeRange>> schedules,
       String attendee, ArrayList<TimeRange> meetingTimes) {
     // Finds slot(s) where attendee is available in relation to currently available meetingTimes.
-    if (firstFlag == 1) {
+    if (firstFlag == true) {
       // If first attendee, simply insert all free slots.
       for (TimeRange free : schedules.get(attendee)) {
         if (free.duration() >= request.getDuration()) {
           meetingTimesToAdd.add(free);
         }
       }
-      // If subsequent attendee, find overlapping time slots and insert the most conservative time
-      // slot.
+      // If subsequent attendee, find overlapping time slots, insert most conservative time slot.
     } else {
       for (ListIterator meetingTimesIterator = meetingTimes.listIterator();
            meetingTimesIterator.hasNext();) {
@@ -190,33 +185,34 @@ public final class FindMeetingQuery {
     // Find how many optionals can attend each free slot
     for (String first : optionalFrees.keySet()) {
       for (String second : optionalFrees.keySet()) {
-        if (first != second) {
-          for (TimeRange firstTime : optionalFrees.get(first)) {
-            for (TimeRange secondTime : optionalFrees.get(second)) {
-              if (firstTime.overlaps(secondTime)) {
-                TimeRange common =
-                    TimeRange.fromStartEnd(Math.max(firstTime.start(), secondTime.start()),
-                        Math.min(firstTime.end(), secondTime.end()), false);
-                if (common.duration() >= request.getDuration()) {
-                  // If slot has already been seen, increment by one
-                  if (freeCounter.containsKey(common)) {
-                    freeCounter.put(common, freeCounter.get(common) + 1);
-                  } else {
-                    int containFlag = 0;
-                    for (TimeRange already : freeCounter.keySet()) {
-                      // If slot is a subset or superset, combine the slot frequencies
-                      if (already.contains(common)) {
-                        freeCounter.put(common, freeCounter.get(already) + 2);
-                        containFlag = 1;
-                      } else if (common.contains(already)) {
-                        freeCounter.put(already, freeCounter.get(already) + 2);
-                        containFlag = 1;
-                      }
+        if (first == second) {
+          continue;
+        }  
+        for (TimeRange firstTime : optionalFrees.get(first)) {
+          for (TimeRange secondTime : optionalFrees.get(second)) {
+            if (firstTime.overlaps(secondTime)) {
+              TimeRange common =
+                  TimeRange.fromStartEnd(Math.max(firstTime.start(), secondTime.start()),
+                      Math.min(firstTime.end(), secondTime.end()), false);
+              if (common.duration() >= request.getDuration()) {
+                // If slot has already been seen, increment by one
+                if (freeCounter.containsKey(common)) {
+                  freeCounter.put(common, freeCounter.get(common) + 1);
+                } else {
+                  boolean containFlag = false;
+                  for (TimeRange already : freeCounter.keySet()) {
+                    // If slot is a subset or superset, combine the slot frequencies
+                    if (already.contains(common)) {
+                      freeCounter.put(common, freeCounter.get(already) + 2);
+                      containFlag = true;
+                    } else if (common.contains(already)) {
+                      freeCounter.put(already, freeCounter.get(already) + 2);
+                      containFlag = true;
                     }
-                    // If slot is new, start keeping track of it
-                    if (containFlag == 0) {
-                      freeCounter.put(common, 1);
-                    }
+                  }
+                  // If slot is new, start keeping track of it
+                  if (containFlag == false) {
+                    freeCounter.put(common, 1);
                   }
                 }
               }
