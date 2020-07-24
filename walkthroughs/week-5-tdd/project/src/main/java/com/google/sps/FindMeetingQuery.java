@@ -46,7 +46,7 @@ public final class FindMeetingQuery {
     boolean firstFlag = true;
     ArrayList<TimeRange> meetingTimesToAdd = new ArrayList<TimeRange>();
     for (String attendee : request.getAttendees()) {
-      meetingTimesToAdd = determineAvailableTime(
+      determineAvailableTime(
           request, firstFlag, meetingTimesToAdd, schedules, attendee, meetingTimes);
       for (TimeRange adding : meetingTimesToAdd) {
         meetingTimes.add(adding);
@@ -61,7 +61,7 @@ public final class FindMeetingQuery {
     for (String optionalAttendee : request.getOptionalAttendees()) {
       firstFlag = false;
       ArrayList<TimeRange> optionalMeetingTimes = (ArrayList<TimeRange>) meetingTimes.clone();
-      optionalMeetingTimesToAdd = determineAvailableTime(request, firstFlag,
+      determineAvailableTime(request, firstFlag,
           optionalMeetingTimesToAdd, schedules, optionalAttendee, optionalMeetingTimes);
       ArrayList<TimeRange> toPut = (ArrayList<TimeRange>) optionalMeetingTimesToAdd.clone();
       if (!toPut.isEmpty()) {
@@ -76,7 +76,7 @@ public final class FindMeetingQuery {
 
     // Find slots where the most optionals can attend
     Map<TimeRange, Integer> freeCounter = new HashMap<TimeRange, Integer>();
-    freeCounter = determineFrequency(freeCounter, optionalFrees, request);
+    determineFrequency(freeCounter, optionalFrees, request);
     int maxFreeOptionals = 0;
     ArrayList<TimeRange> finalTimes = new ArrayList<TimeRange>();
     for (TimeRange window : freeCounter.keySet()) {
@@ -149,7 +149,7 @@ public final class FindMeetingQuery {
     }
   }
 
-  private ArrayList<TimeRange> determineAvailableTime(MeetingRequest request, boolean firstFlag,
+  private void determineAvailableTime(MeetingRequest request, boolean firstFlag,
       ArrayList<TimeRange> meetingTimesToAdd, Map<String, ArrayList<TimeRange>> schedules,
       String attendee, ArrayList<TimeRange> meetingTimes) {
     // Finds slot(s) where attendee is available in relation to currently available meetingTimes.
@@ -160,8 +160,8 @@ public final class FindMeetingQuery {
           meetingTimesToAdd.add(free);
         }
       }
-      // If subsequent attendee, find overlapping time slots, insert most conservative time slot.
     } else {
+      // If subsequent attendee, find overlapping time slots, insert most conservative time slot.
       for (ListIterator meetingTimesIterator = meetingTimes.listIterator();
            meetingTimesIterator.hasNext();) {
         TimeRange firstFree = (TimeRange) meetingTimesIterator.next();
@@ -177,10 +177,9 @@ public final class FindMeetingQuery {
         meetingTimesIterator.remove();
       }
     }
-    return meetingTimesToAdd;
   }
 
-  private Map<TimeRange, Integer> determineFrequency(Map<TimeRange, Integer> freeCounter,
+  private void determineFrequency(Map<TimeRange, Integer> freeCounter,
       Map<String, ArrayList<TimeRange>> optionalFrees, MeetingRequest request) {
     // Find how many optionals can attend each free slot
     for (String first : optionalFrees.keySet()) {
@@ -221,6 +220,5 @@ public final class FindMeetingQuery {
         }
       }
     }
-    return freeCounter;
   }
 }
